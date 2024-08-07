@@ -45,17 +45,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Bump Version
-      run: |
-        npm version patch --no-git-tag-version
+    - name: Read package.json
+      id: package_version
+      run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
     - name: Create Draft Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v${{ steps.create_release.outputs.version }}
-        release_name: Release v${{ steps.create_release.outputs.version }}
+        tag_name: v${{ steps.package_version.outputs.version }}
+        release_name: Release v${{ steps.package_version.outputs.version }}
         body: |
           Changes in this Release
           - First Change

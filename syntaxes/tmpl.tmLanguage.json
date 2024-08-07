@@ -1,0 +1,55 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Template",
+    "patterns": [
+      {
+        "include": "#keywords"
+      },
+      {
+        "include": "#strings"
+      },
+      {
+        "include": "#template-expressions"
+      }
+    ],
+    "repository": {
+      "keywords": {
+        "patterns": [
+          {
+            "name": "keyword.control.tmpl",
+            "match": "\\b(aws_region|pm_api_url|pm_user|pm_password|vm_roles|vm_template|vm_cpu|vm_memory|vm_disk_size|vm_storage|vm_network_bridge|vm_network_model|proxmox_nodes|ssh_public_key_content|ssh_private_key|ssh_user|cloud_init_user_data_file|k8s_master_setup_script|k8s_worker_setup_script|haproxy_setup_script|haproxy_config_file|s3_bucket|s3_key)\\b"
+          }
+        ]
+      },
+      "strings": {
+        "name": "string.quoted.double.tmpl",
+        "begin": "\"",
+        "end": "\"",
+        "patterns": [
+          {
+            "include": "#template-expressions"
+          },
+          {
+            "name": "constant.character.escape.tmpl",
+            "match": "\\\\."
+          }
+        ]
+      },
+      "template-expressions": {
+        "name": "meta.template.expression.tmpl",
+        "begin": "{{",
+        "end": "}}",
+        "patterns": [
+          {
+            "name": "keyword.operator.tmpl",
+            "match": "\\b(Get|Env|GetKeysAsArray|keybase:note)\\b"
+          },
+          {
+            "name": "variable.other.tmpl",
+            "match": "\\b[a-zA-Z0-9_\\.]+\\b"
+          }
+        ]
+      }
+    },
+    "scopeName": "source.tmpl"
+  }

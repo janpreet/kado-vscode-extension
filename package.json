@@ -1,0 +1,100 @@
+{
+  "name": "kado-extension",
+  "displayName": "Kado Extension",
+  "description": "VS Code extension for Kado .kd and .tmpl files",
+  "version": "0.0.1",
+  "publisher": "janpreet",
+  "author": {
+      "name": "Janpreet Singh",
+      "email": "kado@janpreet.com"
+  },
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/janpreet/kado-vscode-extension.git"
+  },
+  "homepage": "https://github.com/janpreet/kado-vscode-extension#readme",
+  "bugs": {
+      "url": "https://github.com/janpreet/kado-vscode-extension/issues"
+  },
+  "license": "GPL-3.0",
+  "engines": {
+      "vscode": "^1.60.0"
+  },
+  "categories": [
+      "Programming Languages"
+  ],
+  "keywords": [
+      "kado",
+      "template",
+      "kd",
+      "tmpl"
+  ],
+  "activationEvents": [
+      "onLanguage:kd",
+      "onLanguage:tmpl"
+  ],
+  "main": "./client/out/extension.js",
+  "contributes": {
+      "languages": [
+          {
+              "id": "kd",
+              "aliases": ["Kado", "kd"],
+              "extensions": [".kd"],
+              "configuration": "./language-configuration.json"
+          },
+          {
+              "id": "tmpl",
+              "aliases": ["Template", "tmpl"],
+              "extensions": [".tmpl"],
+              "configuration": "./language-configuration.json"
+          }
+      ],
+      "grammars": [
+          {
+              "language": "kd",
+              "scopeName": "source.kd",
+              "path": "./syntaxes/kd.tmLanguage.json"
+          },
+          {
+              "language": "tmpl",
+              "scopeName": "source.tmpl",
+              "path": "./syntaxes/tmpl.tmLanguage.json"
+          }
+      ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint client/src server/src --ext ts",
+    "test": "node ./client/out/test/runTest.js",
+    "install-client": "cd client && npm install",
+    "install-server": "cd server && npm install"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.3",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "14.x",
+    "@types/vscode": "^1.60.0",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
+    "eslint": "^7.27.0",
+    "glob": "^7.1.7",
+    "mocha": "^8.4.0",
+    "typescript": "^4.3.2",
+    "vscode-test": "^1.5.2"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^7.0.0",
+    "vscode-languageserver": "^7.0.0",
+    "vscode-languageserver-textdocument": "^1.0.1"
+  },
+  "files": [
+    "client/out/**/*",
+    "server/out/**/*",
+    "syntaxes/**/*",
+    "schemas/**/*"
+  ],
+  "icon": "assets/kado_logo.png"
+}

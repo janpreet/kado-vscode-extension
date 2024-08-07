@@ -1,0 +1,86 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [published]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Install dependencies
+      run: |
+        npm install
+        npm run install-client
+        npm run install-server
+    - name: Run compilation
+      run: npm run compile
+    - name: Run linter
+      run: npm run lint
+    - name: Build Extension
+      run: npm run vscode:prepublish
+    - name: List compiled files
+      run: |
+        echo "Client output:"
+        ls -R client/out
+        echo "Server output:"
+        ls -R server/out
+    - name: Run tests
+      uses: GabrielBB/xvfb-action@v1
+      with:
+        run: npm test
+
+  create-release:
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Bump Version
+      run: |
+        npm version patch --no-git-tag-version
+    - name: Create Draft Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.create_release.outputs.version }}
+        release_name: Release v${{ steps.create_release.outputs.version }}
+        body: |
+          Changes in this Release
+          - First Change
+          - Second Change
+        draft: true
+        prerelease: false
+
+  publish:
+    if: github.event_name == 'release' && github.event.action == 'published'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Install dependencies
+      run: |
+        npm install
+        npm run install-client
+        npm run install-server
+    - name: Run compilation
+      run: npm run compile
+    - name: Install VSCE
+      run: npm install -g vsce
+    - name: Publish to Visual Studio Marketplace
+      run: vsce publish
+      env:
+        VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}

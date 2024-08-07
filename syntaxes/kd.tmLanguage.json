@@ -1,0 +1,41 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Kado",
+    "patterns": [
+      {
+        "include": "#keywords"
+      },
+      {
+        "include": "#strings"
+      },
+      {
+        "include": "#comments"
+      }
+    ],
+    "repository": {
+      "keywords": {
+        "patterns": [
+          {
+            "name": "keyword.control.kd",
+            "match": "\\b(bead|enabled|source|playbook|extra_vars_file|relay|relay_field)\\b"
+          }
+        ]
+      },
+      "strings": {
+        "name": "string.quoted.double.kd",
+        "begin": "\"",
+        "end": "\"",
+        "patterns": [
+          {
+            "name": "constant.character.escape.kd",
+            "match": "\\\\."
+          }
+        ]
+      },
+      "comments": {
+        "name": "comment.line.number-sign.kd",
+        "match": "#.*$"
+      }
+    },
+    "scopeName": "source.kd"
+  }

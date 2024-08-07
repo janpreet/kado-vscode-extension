@@ -1,0 +1,5 @@
+bead "example" {
+  enabled = true
+  source = "git@github.com:example/repo.git"
+  playbook = "example.yaml"
+}

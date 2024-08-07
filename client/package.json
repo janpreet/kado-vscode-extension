@@ -1,0 +1,19 @@
+{
+  "name": "kado-extension-client",
+  "description": "Kado Extension - Client",
+  "author": "Janpreet Singh",
+  "license": "GPL-3.0",
+  "version": "0.0.1",
+  "publisher": "janpreet",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.60.0",
+    "@types/node": "^14.x"
+  },
+  "main": "./out/extension.js"
+}

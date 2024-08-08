@@ -78,9 +78,20 @@ jobs:
         npm run install-server
     - name: Run compilation
       run: npm run compile
-    - name: Install VSCE
-      run: npm install -g vsce
+    - name: Install Publishing Tools
+      run: |
+        npm install -g vsce ovsx
+    - name: Package Extension
+      run: vsce package
+    - name: Get VSIX File Name
+      id: get_vsix
+      run: echo "::set-output name=vsix_file::$(ls *.vsix)"
     - name: Publish to Visual Studio Marketplace
       run: vsce publish
       env:
         VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+    - name: Publish to Open VSX
+      run: ovsx publish ${{ steps.get_vsix.outputs.vsix_file }} -p ${{ secrets.OVSX_TOKEN }}
+    - name: Publish to JetBrains Marketplace
+      run: |
+        curl -X POST -F "file=@${{ steps.get_vsix.outputs.vsix_file }}" -F "token=${{ secrets.JETBRAINS_TOKEN }}" https://plugins.jetbrains.com/plugin/uploadPlugin

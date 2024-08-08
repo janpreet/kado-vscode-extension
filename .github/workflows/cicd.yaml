@@ -81,6 +81,9 @@ jobs:
     - name: Install Publishing Tools
       run: |
         npm install -g vsce ovsx
+    - name: Create Namespace (if not exists)
+      run: |
+        ovsx create-namespace janpreet -p ${{ secrets.OVSX_TOKEN }} || echo "Namespace already exists"
     - name: Package Extension
       run: vsce package
     - name: Get VSIX File Name

@@ -2,7 +2,7 @@
   "name": "kado-extension",
   "displayName": "Kado Extension",
   "description": "VS Code extension for Kado .kd and .tmpl files",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "janpreet",
   "author": {
       "name": "Janpreet Singh",
